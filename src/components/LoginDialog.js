@@ -6,6 +6,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {TextField} from "@material-ui/core";
+import {JwtService} from "../services/JwtService";
+import cookies from "react-cookies";
+import {TOKEN_COOKIE_NAME} from "../constant";
 
 export default function LoginDialog(props) {
     let username;
@@ -37,7 +40,14 @@ export default function LoginDialog(props) {
             </Dialog>
         </div>
     );
+
     function login() {
-        console.log("Submitting", username, password);
+        JwtService.authenticate(username, password) //promise
+            .then(response => { //if succeeded
+                const token = response.data.id_token;
+                cookies.save(TOKEN_COOKIE_NAME, token);
+                window.location.reload();
+            })
+            .catch(error => console.log(String(error))) //if failed
     }
 }

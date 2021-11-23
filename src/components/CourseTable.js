@@ -7,6 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles({
     table: {
@@ -14,27 +15,6 @@ const useStyles = makeStyles({
     },
 });
 
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-}
-//const rows: insert the data in JSON format
-const rows = [
-    {
-        "courseName": "Bury My Heart at Wounded Knee",
-        "courseLocation": "55511",
-        "courseContent": "I felt a great disturbance in the Force, as if millions of voices suddenly cried out in terror and were suddenly silenced.",
-        "teacherId": 53
-    },
-    {
-        "courseName": "Infinite Jest",
-        "courseLocation": "878",
-        "courseContent": "Twice the pride, double the fall.",
-        "teacherId": 81
-    },
-];
-//CourseTable function is for creating the table incluude all of the courses
-//props > 54 props.course
-// map add row and index , index+1 is for show the number on the first column
 export default function CourseTable(props) {
     const classes = useStyles();
 
@@ -48,6 +28,8 @@ export default function CourseTable(props) {
                         <TableCell align="right">Course Content</TableCell>
                         <TableCell align="right">Course Location</TableCell>
                         <TableCell align="right">Teacher ID</TableCell>
+                        <TableCell align="right">Action</TableCell>
+
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -61,6 +43,12 @@ export default function CourseTable(props) {
                             <TableCell align="right">{row.courseContent}</TableCell>
                             <TableCell align="right">{row.courseLocation}</TableCell>
                             <TableCell align="right">{row.teacherId}</TableCell>
+                            <TableCell align="right">
+                                <Button variant= "contained" color="primary"
+                                        onClick={() => props.action(row.courseName)}>
+                                {props.label}
+                                </Button>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

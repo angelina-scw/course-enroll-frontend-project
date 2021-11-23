@@ -6,6 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import LoginDialog from "./LoginDialog";
+import cookies from "react-cookies";
+import {TOKEN_COOKIE_NAME} from "../constant";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -19,14 +21,21 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
     },
 }));
-//function is for show the botton on the top 
-// use component = {Link} to='/', link is component, to is props
+
 export default function NavBar() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+    const token = cookies.load(TOKEN_COOKIE_NAME);
+    const prompt = token ? "Logout" : "Login";
 
     const handleClickOpen = () => {
-        setOpen(true);
+        if (token) { //logout
+            cookies.remove(TOKEN_COOKIE_NAME);
+            window.location.reload();
+        } else { //login
+            setOpen(true);
+        }
+
     };
 
     const handleClose = () => {
@@ -44,7 +53,7 @@ export default function NavBar() {
                     <Button color="inherit" component={Link} to='/'>All Courses</Button>
                     <Button color="inherit" component={Link} to='enrolled'>Enrolled Courses</Button>
                     <span>|</span>
-                    <Button color="inherit" onClick={handleClickOpen}>Login</Button>
+                    <Button color="inherit" onClick={handleClickOpen}>{prompt}</Button>
                 </Toolbar>
             </AppBar>
             <LoginDialog open={open} handleClickOpen={handleClickOpen} handleClose={handleClose} />
